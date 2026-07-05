@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم البيانات | متجري كريبتو</title>
+    <title>لوحة تحكم الحسابات | إدارة المطعم</title>
     <style>
         :root {
-            --primary: #2ecc71;
-            --bg: #131722;
-            --card-bg: #1c2030;
+            --primary: #e67e22;
+            --bg: #1a1a24;
+            --card-bg: #222230;
             --text: #ffffff;
-            --text-muted: #848e9c;
-            --border: #2b3040;
+            --text-muted: #a0a0b0;
+            --border: #2d2d3f;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -31,7 +31,7 @@
             align-items: center;
         }
         h1 { font-size: 28px; color: var(--primary); }
-        .tag { background: rgba(46, 204, 113, 0.1); color: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        .tag { background: rgba(230, 126, 34, 0.1); color: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
         
         /* كروت الإحصائيات العلوية */
         .stats-grid {
@@ -87,10 +87,11 @@
             font-size: 15px;
         }
         tr:hover { background-color: rgba(255,255,255,0.01); }
-        .crypto-name { font-weight: bold; display: flex; align-items: center; gap: 8px; }
-        .badge-up { color: #2ecc71; font-weight: bold; }
+        .dish-name { font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .badge-success { color: #2ecc71; font-weight: bold; background: rgba(46,204,113,0.1); padding: 2px 8px; border-radius: 4px; font-size: 13px; }
+        .badge-pending { color: #f1c40f; font-weight: bold; background: rgba(241,196,15,0.1); padding: 2px 8px; border-radius: 4px; font-size: 13px; }
         
-        /* محاكاة الرسم البياني للمحفظة */
+        /* محاكاة الرسم البياني لتوزيع المبيعات */
         .chart-box {
             display: flex;
             flex-direction: column;
@@ -103,7 +104,7 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: conic-gradient(var(--primary) 0% 65%, #3498db 65% 85%, #f1c40f 85% 100%);
+            background: conic-gradient(var(--primary) 0% 55%, #2ecc71 55% 85%, #e74c3c 85% 100%);
             margin-bottom: 20px;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
@@ -117,86 +118,98 @@
 <div class="container">
     <header>
         <div>
-            <h1>مستودع بيانات الكريبتو</h1>
-            <p style="color: var(--text-muted); font-size: 14px;">تم استيراد البيانات وترتيبها بنجاح من قاعدة SQL</p>
+            <h1>مستودع بيانات المطعم</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">إحصائيات المبيعات والطلبات الحية المستخرجة من قاعدة SQL</p>
         </div>
-        <div class="tag">متصل حياً</div>
+        <div class="tag">نظام المبيعات</div>
     </header>
 
-    <!-- كروت التقارير الرقمية المستخرجة -->
+    <!-- كروت التقارير الرقمية للمطعم -->
     <div class="stats-grid">
         <div class="stat-card">
-            <h3>إجمالي القيمة التقديرية</h3>
-            <div class="value">$12,450.00</div>
+            <h3>إجمالي مبيعات اليوم</h3>
+            <div class="value">3,450.00 ر.س</div>
         </div>
         <div class="stat-card">
-            <h3>عدد العملات النشطة</h3>
-            <div class="value">3 عملات رئيسية</div>
+            <h3>الطلبات المكتملة</h3>
+            <div class="value">42 طلبًا</div>
         </div>
         <div class="stat-card">
-            <h3>آخر تحديث للبيانات</h3>
-            <div class="value" style="font-size: 16px; color: var(--primary);">منذ ثوانٍ قليلة</div>
+            <h3>الطبق الأكثر مبيعاً</h3>
+            <div class="value" style="font-size: 20px; color: var(--primary);">وجبة برجر دبل</div>
         </div>
     </div>
 
     <div class="main-content">
-        <!-- جدول استعلامات الـ SQL -->
+        <!-- جدول استعلامات الـ SQL لحسابات المطعم -->
         <div class="panel">
-            <h2>نتائج استعلام قاعدة البيانات (SQL Query)</h2>
+            <h2>سجل المبيعات والطلبات الأخيرة (SQL Query)</h2>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>الرمز والاسم</th>
-                            <th>الكمية المتاحة</th>
-                            <th>السعر الحالي</th>
-                            <th>إجمالي القيمة</th>
-                            <th>حالة السوق (24س)</th>
+                            <th>رقم الطلب</th>
+                            <th>البيان / الوجبة</th>
+                            <th>الكمية</th>
+                            <th>سعر الوحدة</th>
+                            <th>الإجمالي</th>
+                            <th>حالة الدفع</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><div class="crypto-name"><span style="color:#f1c40f">🪙</span> بيتكوين (BTC)</div></td>
-                            <td>0.15 BTC</td>
-                            <td>$65,200.00</td>
-                            <td>$9,780.00</td>
-                            <td><span class="badge-up">+2.4%</span></td>
+                            <td>#1024</td>
+                            <td><div class="dish-name">🍔 وجبة برجر لحم دبل</div></td>
+                            <td>2</td>
+                            <td>45.00 ر.س</td>
+                            <td>90.00 ر.س</td>
+                            <td><span class="badge-success">مدفوع</span></td>
                         </tr>
                         <tr>
-                            <td><div class="crypto-name"><span style="color:#3498db">🪙</span> إيثيريوم (ETH)</div></td>
-                            <td>0.65 ETH</td>
-                            <td>$3,450.00</td>
-                            <td>$2,242.50</td>
-                            <td><span class="badge-up">+1.8%</span></td>
+                            <td>#1023</td>
+                            <td><div class="dish-name">🍕 بيتزا سوبر سبريم كبير</div></td>
+                            <td>1</td>
+                            <td>60.00 ر.س</td>
+                            <td>60.00 ر.س</td>
+                            <td><span class="badge-success">مدفوع</span></td>
                         </tr>
                         <tr>
-                            <td><div class="crypto-name"><span style="color:#2ecc71">🪙</span> سولانا (SOL)</div></td>
-                            <td>3.10 SOL</td>
-                            <td>$138.00</td>
-                            <td>$427.80</td>
-                            <td><span class="badge-up">+5.1%</span></td>
+                            <td>#1022</td>
+                            <td><div class="dish-name">🍟 وجبة دجاج ستربس + بطاطس</div></td>
+                            <td>3</td>
+                            <td>35.00 ر.س</td>
+                            <td>105.00 ر.س</td>
+                            <td><span class="badge-pending">معلق</span></td>
+                        </tr>
+                        <tr>
+                            <td>#1021</td>
+                            <td><div class="dish-name">🥤 مشروبات غازية متنوعة</div></td>
+                            <td>5</td>
+                            <td>5.00 ر.س</td>
+                            <td>25.00 ر.س</td>
+                            <td><span class="badge-success">مدفوع</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- الرسم البياني لتوزيع المحفظة -->
+        <!-- الرسم البياني لتوزيع مبيعات الأقسام -->
         <div class="panel">
-            <h2>توزيع الأصول بالمحفظة</h2>
+            <h2>توزيع مبيعات الأقسام</h2>
             <div class="chart-box">
                 <div class="circle-chart"></div>
                 <div class="legend">
                     <div class="legend-item">
-                        <span><span class="legend-dot" style="background:#2ecc71"></span>Bitcoin (BTC)</span>
-                        <span style="font-weight: bold;">65%</span>
+                        <span><span class="legend-dot" style="background:#e67e22"></span>قسم الوجبات الرئيسية</span>
+                        <span style="font-weight: bold;">55%</span>
                     </div>
                     <div class="legend-item">
-                        <span><span class="legend-dot" style="background:#3498db"></span>Ethereum (ETH)</span>
-                        <span style="font-weight: bold;">20%</span>
+                        <span><span class="legend-dot" style="background:#2ecc71"></span>قسم المقبلات والبطاطس</span>
+                        <span style="font-weight: bold;">30%</span>
                     </div>
                     <div class="legend-item">
-                        <span><span class="legend-dot" style="background:#f1c40f"></span>الأصول الأخرى</span>
+                        <span><span class="legend-dot" style="background:#e74c3c"></span>المشروبات والحلويات</span>
                         <span style="font-weight: bold;">15%</span>
                     </div>
                 </div>
