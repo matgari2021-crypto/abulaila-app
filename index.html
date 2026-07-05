@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الكاشير الذكي | إدارة المطعم</title>
+    <title>نظام الكاشير الذكي والإدارة | المطعم المميز</title>
     <style>
         :root {
             --primary: #e67e22;
@@ -14,48 +14,77 @@
             --border: #2d2d3f;
             --success: #2ecc71;
             --danger: #e74c3c;
+            --info: #3498db;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding: 20px; }
         
-        .pos-container {
+        .main-layout {
             display: grid;
             grid-template-columns: 1fr 400px;
             gap: 20px;
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
-        @media (max-width: 1024px) {
-            .pos-container { grid-template-columns: 1fr; }
+        @media (max-width: 1100px) {
+            .main-layout { grid-template-columns: 1fr; }
         }
 
-        /* القسم الأيمن: المجموعات والأصناف */
+        /* القسم الأيمن: المنيو والإدارة */
+        .right-column { display: flex; flex-direction: column; gap: 20px; }
+        
+        /* كرت البيانات الرئيسية والإدارة */
+        .admin-card { background: var(--card-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+        .admin-card h2 { font-size: 18px; color: var(--info); margin-bottom: 15px; border-right: 4px solid var(--info); padding-right: 10px; }
+        
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 12px; color: var(--text-muted); }
+        .form-control { background: #232334; border: 1px solid var(--border); color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+        .form-control:focus { border-color: var(--info); outline: none; }
+        
+        .btn-inline { background: var(--info); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; align-self: flex-end; font-size: 13px; }
+        .btn-inline:hover { background: #2980b9; }
+
+        /* جدول تعديل الأسعار السريع */
+        .price-table-container { max-height: 150px; overflow-y: auto; margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px; }
+        .price-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; }
+        .price-table th { color: var(--text-muted); padding: 6px; border-bottom: 1px solid var(--border); }
+        .price-table td { padding: 6px 4px; border-bottom: 1px solid var(--border); }
+        .input-price-edit { background: #2a2a3d; border: 1px solid var(--border); color: #fff; width: 70px; padding: 3px; border-radius: 4px; text-align: center; }
+
+        /* كرت عرض الأصناف والكاشير */
         .menu-section { background: var(--card-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
-        .categories { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .categories { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .cat-btn {
             background: #28283a; color: var(--text); border: 1px solid var(--border);
-            padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s;
+            padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; transition: 0.2s;
         }
         .cat-btn.active, .cat-btn:hover { background: var(--primary); border-color: var(--primary); }
         
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
         .product-card {
             background: #232334; border: 1px solid var(--border); border-radius: 10px; padding: 15px;
             text-align: center; cursor: pointer; transition: 0.2s;
         }
         .product-card:hover { transform: translateY(-3px); border-color: var(--primary); }
-        .product-icon { font-size: 35px; margin-bottom: 10px; }
-        .product-name { font-weight: bold; margin-bottom: 8px; font-size: 15px; }
-        .product-price { color: var(--primary); font-weight: bold; font-size: 16px; }
+        .product-icon { font-size: 30px; margin-bottom: 10px; }
+        .product-name { font-weight: bold; margin-bottom: 8px; font-size: 14px; }
+        .product-price { color: var(--primary); font-weight: bold; font-size: 15px; }
 
-        /* القسم الأيسر: السلة والفاتورة */
+        /* القسم الأيسر: السلة والفاتورة المطبوعة */
         .cart-section {
             background: var(--card-bg); border-radius: 12px; padding: 20px;
-            border: 1px solid var(--border); display: flex; flex-direction: column; height: calc(100vh - 40px); min-height: 600px;
+            border: 1px solid var(--border); display: flex; flex-direction: column; height: calc(100vh - 40px); min-height: 700px;
         }
-        .cart-section h2 { font-size: 20px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); color: var(--primary); }
         
-        .cart-items { flex: 1; overflow-y: auto; margin-bottom: 15px; padding-right: 5px; }
+        /* ترويسة الفاتورة المطبوعة (مخفية في الشاشة تظهر في الطباعة) */
+        .invoice-print-header { display: none; text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #000; padding-bottom: 15px; color: black; }
+        .invoice-print-header h2 { font-size: 22px; margin-bottom: 5px; }
+        .invoice-print-header p { font-size: 14px; margin-bottom: 3px; }
+
+        .cart-title-screen { font-size: 20px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border); color: var(--primary); }
+        .cart-items { flex: 1; overflow-y: auto; margin-bottom: 15px; }
         .cart-item {
             display: flex; justify-content: space-between; align-items: center;
             background: #232334; padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border);
@@ -66,12 +95,12 @@
         
         .qty-controls { display: flex; align-items: center; gap: 8px; margin-left: 10px; }
         .qty-btn {
-            background: #2f2f44; color: white; border: none; width: 28px; height: 28px;
-            border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; display: flex; align-items: center; justify-content: center;
+            background: #2f2f44; color: white; border: none; width: 26px; height: 26px;
+            border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px; display: flex; align-items: center; justify-content: center;
         }
         .qty-btn:hover { background: var(--primary); }
-        .qty-val { font-weight: bold; min-width: 20px; text-align: center; }
-        .del-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 18px; margin-left: 5px; }
+        .qty-val { font-weight: bold; min-width: 18px; text-align: center; }
+        .del-btn { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 16px; margin-left: 5px; }
 
         /* الحسابات المالية */
         .summary-box { border-top: 2px dashed var(--border); padding-top: 15px; margin-bottom: 15px; }
@@ -80,144 +109,64 @@
         
         .discount-input-box { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
         .discount-input-box label { font-size: 13px; color: var(--text-muted); }
-        .discount-input {
-            background: #232334; border: 1px solid var(--border); color: white;
-            padding: 5px 10px; border-radius: 5px; width: 80px; text-align: center;
-        }
+        .discount-input { background: #232334; border: 1px solid var(--border); color: white; padding: 5px 10px; border-radius: 5px; width: 80px; text-align: center; }
 
         /* أزرار التحكم */
         .action-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn {
-            padding: 12px; border: none; border-radius: 8px; font-weight: bold;
-            font-size: 15px; cursor: pointer; transition: 0.2s; text-align: center;
-        }
+        .btn { padding: 12px; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.2s; text-align: center; }
         .btn-new { background: #34495e; color: white; }
         .btn-new:hover { background: #2c3e50; }
         .btn-print { background: var(--success); color: white; }
         .btn-print:hover { background: #27ae60; }
 
-        /* تنسيق الطباعة فقط */
+        /* استايل وطريقة العرض عند الطباعة الفعليّة الورقية */
         @media print {
             body * { visibility: hidden; }
             .cart-section, .cart-section * { visibility: visible; }
-            .cart-section { position: absolute; left: 0; top: 0; width: 100%; height: auto; background: white; color: black; border: none; }
-            .qty-btn, .del-btn, .discount-input-box, .action-btns, h2 { display: none !important; }
-            .cart-item { background: none; border-bottom: 1px solid #ccc; color: black; }
+            .cart-section { position: absolute; left: 0; top: 0; width: 100%; height: auto; background: white; color: black; border: none; padding: 10px; }
+            .invoice-print-header { display: block; }
+            .cart-title-screen, .qty-btn, .del-btn, .discount-input-box, .action-btns { display: none !important; }
+            .cart-item { background: none; border-bottom: 1px solid #000; color: black; padding: 8px 0; border-radius: 0; }
+            .item-cost { color: #000; }
+            .summary-box { border-top: 2px dashed #000; }
             .summary-row { color: black; }
-            .summary-row.total { color: black; border-top: 2px solid black; }
+            .summary-row.total { color: black; border-top: 2px solid black; font-size: 20px; }
         }
     </style>
 </head>
 <body>
 
-<div class="pos-container">
+<div class="main-layout">
     
-    <!-- القسم الأيمن: المجموعات والمنيو -->
-    <div class="menu-section">
-        <div class="categories">
-            <button class="cat-btn active" onclick="switchCategory('grill')">🍖 مشويات</button>
-            <button class="cat-btn" onclick="switchCategory('drinks')">🥤 مشروبات</button>
-        </div>
+    <!-- العمود الأيمن: البيانات والمنيو -->
+    <div class="right-column">
         
-        <div class="products-grid" id="products-container">
-            <!-- سيتم تحميل الأصناف تلقائياً عبر الجافاسكريبت هنا -->
-        </div>
-    </div>
-
-    <!-- القسم الأيسر: السلة وتفاصيل الفاتورة -->
-    <div class="cart-section" id="invoice">
-        <h2>🛒 سلة طلبات الفاتورة</h2>
-        
-        <div class="cart-items" id="cart-items-container">
-            <!-- عناصر السلة المضافة تظهر هنا -->
-            <p style="text-align: center; color: var(--text-muted); margin-top: 50px;" id="empty-msg">السلة فارغة، اختر الأصناف لبدء الفاتورة</p>
-        </div>
-
-        <div class="discount-input-box">
-            <label>قيمة الخصم (ر.س):</label>
-            <input type="number" class="discount-input" id="discount-field" value="0" min="0" oninput="updateCalculations()">
-        </div>
-
-        <div class="summary-box">
-            <div class="summary-row"><span>الإجمالي (قبل الضريبة):</span><span id="subtotal">0.00 ر.س</span></div>
-            <div class="summary-row"><span>الضريبة (15%):</span><span id="tax">0.00 ر.س</span></div>
-            <div class="summary-row"><span>الخصم المطبق:</span><span id="discount-val">0.00 ر.س</span></div>
-            <div class="summary-row total"><span>صافي الفاتورة:</span><span id="grand-total">0.00 ر.س</span></div>
-        </div>
-
-        <div class="action-btns">
-            <button class="btn btn-new" onclick="clearInvoice()">فاتورة جديدة</button>
-            <button class="btn btn-print" onclick="printInvoice()">حفظ وطباعة</button>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    // قاعدة بيانات الأصناف المستخرجة والمصنفة
-    const menuData = {
-        grill: [
-            { id: 1, name: 'كباب لحم فاخر', price: 45.00, icon: '🍢' },
-            { id: 2, name: 'شيش طاووق دجاج', price: 38.00, icon: '🍗' },
-            { id: 3, name: 'أوصال لحم مشوي', price: 42.00, icon: '🥩' },
-            { id: 4, name: 'مشوي مشكل (نفر)', price: 55.00, icon: '🍽️' }
-        ],
-        drinks: [
-            { id: 5, name: 'عصير برتقال طازج', price: 12.00, icon: '🍊' },
-            { id: 6, name: 'مشروب غازي متنوع', price: 5.00, icon: '🥤' },
-            { id: 7, name: 'ماء صحي صغير', price: 1.50, icon: '💧' }
-        ]
-    };
-
-    let cart = [];
-
-    // عرض الأصناف بناءً على القسم المختار
-    function switchCategory(cat) {
-        document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        const container = document.getElementById('products-container');
-        container.innerHTML = '';
-        
-        menuData[cat].forEach(prod => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.onclick = () => addToCart(prod);
-            card.innerHTML = `
-                <div class="product-icon">${prod.icon}</div>
-                <div class="product-name">${prod.name}</div>
-                <div class="product-price">${prod.price.toFixed(2)} ر.س</div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
-    // إضافة صنف إلى السلة
-    function addToCart(product) {
-        const existing = cart.find(item => item.id === product.id);
-        if (existing) {
-            existing.qty++;
-        } else {
-            cart.push({ ...product, qty: 1 });
-        }
-        renderCart();
-    }
-
-    // تغيير الكميات (+ أو -)
-    function changeQty(id, amount) {
-        const item = cart.find(item => item.id === id);
-        if (item) {
-            item.qty += amount;
-            if (item.qty <= 0) {
-                cart = cart.filter(i => i.id !== id);
-            }
-        }
-        renderCart();
-    }
-
-    // حذف صنف بالكامل من السلة
-    function deleteItem(id) {
-        cart = cart.filter(item => item.id !== id);
-        renderCart();
-    }
-
+        <!-- كرت البيانات الرئيسية وإدارة التكويد والأسعار -->
+        <div class="admin-card">
+            <h2>⚙️ كرت البيانات الرئيسية والتكويد</h2>
+            <div class="admin-grid">
+                <div class="form-group">
+                    <label>اسم الشركة / المطعم:</label>
+                    <input type="text" id="company-name-input" class="form-control" value="مطعم المشويات المميز" oninput="updateCompanyDetails()">
+                </div>
+                <div class="form-group">
+                    <label>الرقم الضريبي (الرقم المميز):</label>
+                    <input type="text" id="tax-number-input" class="form-control" value="310123456700003" oninput="updateCompanyDetails()">
+                </div>
+            </div>
+            
+            <!-- نموذج تكويد صنف جديد -->
+            <div class="admin-grid" style="border-top: 1px dashed var(--border); padding-top: 12px;">
+                <div class="form-group">
+                    <label>اسم الصنف الجديد:</label>
+                    <input type="text" id="new-item-name" class="form-control" placeholder="مثال: ريش غنم">
+                </div>
+                <div class="form-group">
+                    <label>المجموعة الرئيسية:</label>
+                    <select id="new-item-cat" class="form-control">
+                        <option value="grill">🍖 مشويات</option>
+                        <option value="drinks">🥤 مشروبات</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>السعر (ر.س):</label>
