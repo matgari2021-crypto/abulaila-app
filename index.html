@@ -2,15 +2,208 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>موقعي الأول</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم البيانات | متجري كريبتو</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 100px; background-color: #f4f4f9; }
-        h1 { color: #2ecc71; font-size: 40px; }
-        p { color: #555; font-size: 20px; }
+        :root {
+            --primary: #2ecc71;
+            --bg: #131722;
+            --card-bg: #1c2030;
+            --text: #ffffff;
+            --text-muted: #848e9c;
+            --border: #2b3040;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 30px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 { font-size: 28px; color: var(--primary); }
+        .tag { background: rgba(46, 204, 113, 0.1); color: var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        
+        /* كروت الإحصائيات العلوية */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .stat-card h3 { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; }
+        .stat-card .value { font-size: 24px; font-weight: bold; color: #fff; }
+        
+        /* قسم الجدول والرسم البياني */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+        .panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .panel h2 { font-size: 18px; margin-bottom: 20px; color: #fff; border-right: 4px solid var(--primary); padding-right: 10px; }
+        
+        /* تنسيق جدول البيانات المستخرجة من SQL */
+        .table-container { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+        th {
+            background-color: rgba(255,255,255,0.02);
+            color: var(--text-muted);
+            padding: 15px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+        }
+        tr:hover { background-color: rgba(255,255,255,0.01); }
+        .crypto-name { font-weight: bold; display: flex; align-items: center; gap: 8px; }
+        .badge-up { color: #2ecc71; font-weight: bold; }
+        
+        /* محاكاة الرسم البياني للمحفظة */
+        .chart-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            min-height: 250px;
+        }
+        .circle-chart {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 65%, #3498db 65% 85%, #f1c40f 85% 100%);
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        .legend { width: 100%; }
+        .legend-item { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
+        .legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-left: 8px; }
     </style>
 </head>
 <body>
-    <h1>🎉 أهلاً بك في موقعي الأول! 🎉</h1>
-    <p>تم إطلاق الموقع وتحديث الملفات بنجاح عبر GitHub و Render.</p>
+
+<div class="container">
+    <header>
+        <div>
+            <h1>مستودع بيانات الكريبتو</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">تم استيراد البيانات وترتيبها بنجاح من قاعدة SQL</p>
+        </div>
+        <div class="tag">متصل حياً</div>
+    </header>
+
+    <!-- كروت التقارير الرقمية المستخرجة -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>إجمالي القيمة التقديرية</h3>
+            <div class="value">$12,450.00</div>
+        </div>
+        <div class="stat-card">
+            <h3>عدد العملات النشطة</h3>
+            <div class="value">3 عملات رئيسية</div>
+        </div>
+        <div class="stat-card">
+            <h3>آخر تحديث للبيانات</h3>
+            <div class="value" style="font-size: 16px; color: var(--primary);">منذ ثوانٍ قليلة</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- جدول استعلامات الـ SQL -->
+        <div class="panel">
+            <h2>نتائج استعلام قاعدة البيانات (SQL Query)</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الرمز والاسم</th>
+                            <th>الكمية المتاحة</th>
+                            <th>السعر الحالي</th>
+                            <th>إجمالي القيمة</th>
+                            <th>حالة السوق (24س)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="crypto-name"><span style="color:#f1c40f">🪙</span> بيتكوين (BTC)</div></td>
+                            <td>0.15 BTC</td>
+                            <td>$65,200.00</td>
+                            <td>$9,780.00</td>
+                            <td><span class="badge-up">+2.4%</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="crypto-name"><span style="color:#3498db">🪙</span> إيثيريوم (ETH)</div></td>
+                            <td>0.65 ETH</td>
+                            <td>$3,450.00</td>
+                            <td>$2,242.50</td>
+                            <td><span class="badge-up">+1.8%</span></td>
+                        </tr>
+                        <tr>
+                            <td><div class="crypto-name"><span style="color:#2ecc71">🪙</span> سولانا (SOL)</div></td>
+                            <td>3.10 SOL</td>
+                            <td>$138.00</td>
+                            <td>$427.80</td>
+                            <td><span class="badge-up">+5.1%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- الرسم البياني لتوزيع المحفظة -->
+        <div class="panel">
+            <h2>توزيع الأصول بالمحفظة</h2>
+            <div class="chart-box">
+                <div class="circle-chart"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <span><span class="legend-dot" style="background:#2ecc71"></span>Bitcoin (BTC)</span>
+                        <span style="font-weight: bold;">65%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span><span class="legend-dot" style="background:#3498db"></span>Ethereum (ETH)</span>
+                        <span style="font-weight: bold;">20%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span><span class="legend-dot" style="background:#f1c40f"></span>الأصول الأخرى</span>
+                        <span style="font-weight: bold;">15%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
